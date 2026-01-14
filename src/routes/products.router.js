@@ -38,7 +38,7 @@ router.get("/:pid", async (req, res) => {
   }
 });
 
-// POST → crear producto
+// POST → crear producto nuevo con ID dinamico
 router.post("/", async (req, res) => {
   try {
     const { title, description, price, code, stock } = req.body;
@@ -65,7 +65,10 @@ router.put("/:pid", async (req, res) => {
     const pid = Number(req.params.pid);
     const updatedFields = req.body;
 
-    const updatedProduct = await productManager.updateProduct(pid, updatedFields);
+    const updatedProduct = await productManager.updateProduct(
+      pid,
+      updatedFields
+    );
 
     if (!updatedProduct) {
       return res.status(404).json({ error: "Producto no encontrado" });
@@ -77,7 +80,7 @@ router.put("/:pid", async (req, res) => {
   }
 });
 
-// DELETE → eliminar producto
+// DELETE → eliminar producto seleccionando el ID
 router.delete("/:pid", async (req, res) => {
   try {
     const pid = Number(req.params.pid);

@@ -15,13 +15,13 @@ export default class ProductManager {
     }
   }
 
-  // GET BY ID - obtener un producto puntual
+  // GET BY ID - obtener un producto puntual por ID
   async getProductById(id) {
     const products = await this.getProducts();
     return products.find((product) => product.id === id);
   }
 
-  // POST - agregar producto
+  // POST - agregar producto y los compara.
   async addProduct(product) {
     const products = await this.getProducts();
 
@@ -29,12 +29,13 @@ export default class ProductManager {
     if (exists) {
       return null;
     }
-
+    // creamos un producto y hacemos que el ID se incremente en 1.
     const newProduct = {
       id: products.length === 0 ? 1 : products[products.length - 1].id + 1,
       ...product,
     };
 
+    // sumamos el producto a la lista de productos.
     products.push(newProduct);
 
     await fs.writeFile(this.path, JSON.stringify(products, null, 2));
@@ -54,7 +55,7 @@ export default class ProductManager {
     products[index] = {
       ...products[index],
       ...updatedFields,
-      id,
+      id, // Esto hace que el ID permanezca sin modificarse.
     };
 
     await fs.writeFile(this.path, JSON.stringify(products, null, 2));
